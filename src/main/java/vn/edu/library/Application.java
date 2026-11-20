@@ -25,7 +25,10 @@ public class Application {
     }
 
     public static Tomcat start(int port) throws Exception {
-        Path base = Path.of("target", "tomcat").toAbsolutePath();
+        Path target = Path.of("target").toAbsolutePath();
+        Files.createDirectories(target);
+        // A test server and the user's running server must not share generated JSP files.
+        Path base = port == 0 ? Files.createTempDirectory(target, "tomcat-test-") : target.resolve("tomcat-" + port);
         Files.createDirectories(base);
         Tomcat tomcat = new Tomcat();
         tomcat.setBaseDir(base.toString());

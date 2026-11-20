@@ -1,0 +1,10 @@
+# Copy to config/database.properties (ignored by Git), or an external UTF-8 file.
+# Environment variables LIBMAN_DB_* override these db.* properties.
+db.host=127.0.0.1
+db.port=3306
+db.name=libman
+db.user=libman_app
+# Set locally; this example contains no actual password.
+db.password=
+db.ssl_mode=PREFERRED
+db.allow_public_key_retrieval=false

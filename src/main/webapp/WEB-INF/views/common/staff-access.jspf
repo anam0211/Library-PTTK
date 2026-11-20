@@ -1,0 +1,20 @@
+<%@ page pageEncoding="UTF-8" import="vn.edu.library.model.Member2,vn.edu.library.dao.MemberDAO,java.sql.SQLException" %>
+<%
+    Member2 signedInMember = (Member2) session.getAttribute("signedInMember");
+    if (signedInMember == null) {
+        if ("GET".equals(request.getMethod())) response.sendRedirect(request.getContextPath()+"/dang-nhap");
+        else response.sendError(403);
+        return;
+    }
+    try (MemberDAO accounts = new MemberDAO()) {
+        signedInMember = accounts.getActiveById(signedInMember.getId());
+    } catch (SQLException error) {
+        application.log("Account access SQLState="+error.getSQLState());
+        response.sendError(503, "Chưa thể kiểm tra tài khoản. Vui lòng thử lại."); return;
+    }
+    if (signedInMember == null) {
+        session.invalidate(); response.sendRedirect(request.getContextPath()+"/dang-nhap"); return;
+    }
+    session.setAttribute("signedInMember", signedInMember);
+    if (!signedInMember.isLibrarian()) { response.sendError(403); return; }
+%>

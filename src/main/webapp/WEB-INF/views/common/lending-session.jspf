@@ -1,0 +1,25 @@
+<%@ page pageEncoding="UTF-8" %>
+<%@ include file="staff-access.jspf" %>
+<%@ include file="lending-functions.jspf" %>
+<%
+    request.setCharacterEncoding("UTF-8");
+    response.setHeader("Cache-Control", "no-store");
+    synchronized (session) {
+    if (session.getAttribute("csrf") == null) session.setAttribute("csrf", UUID.randomUUID().toString());
+    request.setAttribute("csrf", session.getAttribute("csrf"));
+    request.setAttribute("demoRole", "librarian");
+    if ("POST".equals(request.getMethod())
+            && !session.getAttribute("csrf").equals(request.getParameter("csrf"))) {
+        response.sendError(403, "Phiên thao tác không hợp lệ. Hãy tải lại trang.");
+        return;
+    }
+    if (!"GET".equals(request.getMethod()) && !"POST".equals(request.getMethod())) {
+        response.sendError(405);
+        return;
+    }
+    if ("GET".equals(request.getMethod())) {
+        request.setAttribute("errorMessage", session.getAttribute("loanError"));
+        session.removeAttribute("loanError");
+    }
+    }
+%>

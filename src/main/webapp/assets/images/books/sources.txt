@@ -1,0 +1,18 @@
+Ảnh bìa tải ngày 20/11/2026, dùng minh họa cho dữ liệu demo LibMan.
+Thông tin tác giả, nhà xuất bản và năm của dữ liệu demo không nhất thiết trùng với ấn bản trên ảnh.
+Các ảnh được lưu cục bộ; trang tra cứu không phụ thuộc đường dẫn ảnh bên ngoài.
+
+1. co-so-du-lieu.webp — đầu tài liệu id=1, Cơ sở dữ liệu
+Bìa: Giáo trình Cơ sở dữ liệu quan hệ — Lý thuyết và Áp dụng.
+Nguồn: https://www.nxbkhcntt.vn/san-pham/giao-trinh-co-so-du-lieu-quan-he-ly-thuyet-va-ap-dung
+Ảnh: https://www.nxbkhcntt.vn/sites/default/files/styles/max_650x650/public/imported_files/2025/01/sanpham/Giao_trinh_co_so_du_lieu_quan_he_ly_thuyet_va_ap_dung-1-bf60a119c987faf191c6cae4c61948be.jpg.webp?itok=kWJl0hI9
+
+2. lap-trinh-huong-doi-tuong.png — đầu tài liệu id=2, Lập trình hướng đối tượng
+Bìa: Giáo trình Lập trình hướng đối tượng — Nhà xuất bản Khoa học và Kỹ thuật.
+Nguồn: https://nxbkhkt.com.vn/san-pham/giao-trinh-lap-trinh-huong-doi-tuong
+Ảnh: https://nxbkhkt.com.vn/wp-content/uploads/2024/08/Screenshot-2025-03-05-095951.png
+
+3. mang-may-tinh.jpg — đầu tài liệu id=3, Mạng máy tính
+Bìa: Mạng máy tính — Ngạc Văn An (Chủ biên).
+Nguồn: https://lic.haui.edu.vn/vn/gioi-thieu-sach-moi/mang-may-tinh-ngac-van-an/64698
+Ảnh: https://lic.haui.edu.vn/media/79/t79782.jpg

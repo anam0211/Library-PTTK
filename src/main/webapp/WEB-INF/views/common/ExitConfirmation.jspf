@@ -1,0 +1,11 @@
+<%@ page pageEncoding="UTF-8" %>
+  <dialog id="exit-dialog" aria-labelledby="exit-title" aria-describedby="exit-description">
+    <form method="dialog">
+      <h2 id="exit-title"></h2>
+      <p id="exit-description"></p>
+      <div class="actions end">
+        <button class="button neutral" value="keep" autofocus>Tiếp tục lập phiếu</button>
+        <button class="button primary" id="exit-confirm" value="discard"></button>
+      </div>
+    </form>
+  </dialog>

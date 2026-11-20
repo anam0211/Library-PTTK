@@ -1,3 +1,3 @@
 @echo off
 cd /d "%~dp0"
-call mvn compile exec:java
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0run-backend.ps1" %*

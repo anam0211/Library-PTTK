@@ -13,9 +13,16 @@
         <maven.compiler.release>17</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <tomcat.version>10.1.61</tomcat.version>
+        <mysql.connector.version>8.4.0</mysql.connector.version>
+        <exec.mainClass>vn.edu.library.Application</exec.mainClass>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <version>${mysql.connector.version}</version>
+        </dependency>
         <!-- Tomcat cung cấp Servlet/JSP; không đóng các thư viện này vào WAR. -->
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
@@ -82,7 +89,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.5.0</version>
                 <configuration>
-                    <mainClass>vn.edu.library.Application</mainClass>
+                    <mainClass>${exec.mainClass}</mainClass>
                     <classpathScope>compile</classpathScope>
                 </configuration>
             </plugin>

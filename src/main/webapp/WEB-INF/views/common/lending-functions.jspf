@@ -1,0 +1,44 @@
+<%@ page pageEncoding="UTF-8" import="java.sql.SQLException,java.util.*,vn.edu.library.dao.*,vn.edu.library.model.*" %>
+<%!
+    // Shared page helpers only. Each JSP handles its own HTTP action and calls DAO directly.
+    private int integer(String value) {
+        try { return Integer.parseInt(value); } catch (RuntimeException ignored) { return 0; }
+    }
+
+    private String parameter(jakarta.servlet.http.HttpServletRequest request, String name) {
+        String value = request.getParameter(name);
+        return value == null ? "" : value.trim();
+    }
+
+    private BorrowingContext loadBorrowingContext(ReaderDAO dao, int readerId) throws SQLException {
+        LibraryCard2 card = dao.getUsableCard(readerId, BorrowingContext.today());
+        if (card == null) card = dao.getLatestCard(readerId);
+        return new BorrowingContext(dao.getById(readerId), card,
+                dao.getApplicablePolicy(readerId, BorrowingContext.today()),
+                dao.getCurrentLoanDetails(readerId), dao.getUnpaidFineAmount(readerId), BorrowingContext.today());
+    }
+
+    private String copyError(DocumentCopy2 copy, LoanDraft draft, BorrowingContext context) {
+        if (context == null || !context.isEligible()) return context == null ? "Hãy chọn bạn đọc trước." : context.getError();
+        if (copy == null) return "Không tìm thấy bản tài liệu.";
+        if (!copy.isAvailable()) return "Bản " + copy.getCopyCode() + " không sẵn sàng để mượn về.";
+        if (draft.contains(copy.getCopyCode())) return "Bản " + copy.getCopyCode() + " đã có trong danh sách đang chọn.";
+        if (draft.getSize() >= context.getRemaining()) return "Danh sách đã đạt hạn mức còn lại.";
+        return "";
+    }
+
+    private List<String> conditions(DocumentCopy2 copy) {
+        Set<String> result = new LinkedHashSet<>(List.of("Tốt", "Cũ", "Hư hỏng nhẹ"));
+        result.add(copy.getPhysicalCondition());
+        return new ArrayList<>(result);
+    }
+
+    private void checkDraft(LoanDraft draft, String token) throws LoanValidationException {
+        if (draft != null && !draft.getToken().equals(token))
+            throw new LoanValidationException("Lượt lập phiếu đã thay đổi ở tab khác. Hãy kiểm tra danh sách hiện tại.");
+    }
+
+    private void logSql(SQLException error) {
+        getServletContext().log("Lending SQLState=" + error.getSQLState() + ", code=" + error.getErrorCode());
+    }
+%>

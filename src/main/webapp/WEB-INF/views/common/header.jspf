@@ -1,16 +1,41 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="false" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><c:out value="${tieuDe}" default="LIBMAN" /> | LIBMAN</title>
-    <link rel="stylesheet" href="<c:url value='/assets/css/style.css' />">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fffdf8">
+  <title><c:out value="${tieuDe}" default="LibMan" /> · LibMan</title>
+  <link rel="stylesheet" href="<c:url value='/assets/css/style.css' />">
+  <c:if test="${authPage}"><link rel="stylesheet" href="<c:url value='/assets/css/auth.css' />"></c:if>
 </head>
-<body>
-<div class="app-shell">
-    <header class="site-header">
-        <a class="brand" href="<c:url value='/trang-chu' />" aria-label="LIBMAN - Trang chủ">LIBMAN</a>
-        <p>HỆ THỐNG QUẢN LÝ THƯ VIỆN</p>
-    </header>
+<body data-page="<c:out value='${pageId}' />" data-role="<c:out value='${demoRole}' />" data-context="<c:out value='${pageContext.request.contextPath}' />">
+  <header class="site-header">
+    <div class="shell header-content">
+      <div class="header-brand">
+        <c:choose><c:when test="${empty sessionScope.signedInMember}"><c:url var="homeUrl" value="/dang-nhap" /></c:when><c:when test="${sessionScope.signedInMember.librarian}"><c:url var="homeUrl" value="/nhan-vien" /></c:when><c:otherwise><c:url var="homeUrl" value="/ban-doc" /></c:otherwise></c:choose>
+        <a class="brand" href="<c:out value='${homeUrl}' />" data-home aria-label="LibMan, trang chủ">
+          <span class="brand-icon" aria-hidden="true"><span class="book"></span></span>
+          <span class="brand-wordmark">LibMan</span>
+        </a>
+        <div class="header-context">Quản lý thư viện<strong><c:choose><c:when test="${authPage}">Tài khoản thư viện</c:when><c:when test="${demoRole == 'librarian'}">Quầy mượn tài liệu</c:when><c:otherwise>Tra cứu tài liệu</c:otherwise></c:choose></strong></div>
+      </div>
+      <c:choose>
+        <c:when test="${authPage}"></c:when>
+        <c:when test="${not empty sessionScope.signedInMember}">
+          <div class="account" aria-label="Tài khoản đang đăng nhập">
+            <span class="avatar" aria-hidden="true"></span>
+            <div class="account-info">
+              <span class="account-name" id="account-role">${sessionScope.signedInMember.librarian ? 'Nhân viên' : 'Bạn đọc'}</span>
+            </div>
+            <form class="logout-form" method="post" action="<c:url value='/dang-xuat' />">
+              <input type="hidden" name="csrf" value="<c:out value='${sessionScope.csrf}' />">
+              <button id="logout" class="button neutral logout-button" type="submit">Đăng xuất</button>
+            </form>
+          </div>
+        </c:when>
+        <c:otherwise><nav class="auth-nav" aria-label="Tài khoản"><a class="button neutral" href="<c:url value='/dang-nhap' />">Đăng nhập</a></nav></c:otherwise>
+      </c:choose>
+    </div>
+  </header>

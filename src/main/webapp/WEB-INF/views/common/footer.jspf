@@ -1,3 +1,4 @@
-</div>
+<%@ page pageEncoding="UTF-8" %>
+  <script src="<c:url value='/assets/js/libman-ui.js' />"></script>
 </body>
 </html>

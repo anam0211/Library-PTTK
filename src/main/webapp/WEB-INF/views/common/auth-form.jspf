@@ -1,0 +1,20 @@
+<%@ page pageEncoding="UTF-8" import="java.sql.SQLException,java.util.UUID,vn.edu.library.dao.MemberDAO,vn.edu.library.model.Member2" %>
+<%
+    request.setCharacterEncoding("UTF-8");
+    response.setHeader("Cache-Control", "no-store");
+    response.setHeader("Referrer-Policy", "same-origin");
+    synchronized (session) {
+        if (session.getAttribute("csrf") == null) session.setAttribute("csrf", UUID.randomUUID().toString());
+        request.setAttribute("csrf", session.getAttribute("csrf"));
+    }
+    Member2 currentMember = (Member2) session.getAttribute("signedInMember");
+    if (currentMember != null) {
+        response.sendRedirect(request.getContextPath() + currentMember.getHomePath());
+        return;
+    }
+    if (!"GET".equals(request.getMethod()) && !"POST".equals(request.getMethod())) {
+        response.sendError(405); return;
+    }
+    request.setAttribute("authPage", true);
+    request.setAttribute("demoRole", "auth");
+%>

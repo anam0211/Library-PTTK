@@ -8,3 +8,8 @@
 .settings/
 .DS_Store
 Thumbs.db
+
+# Local JDBC credentials; commit only database.properties.example.
+/config/database.properties
+/.env
+/.env.local
