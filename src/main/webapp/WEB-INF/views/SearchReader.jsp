@@ -33,8 +33,7 @@
         request.setAttribute("searched", keyword != null);
         if (keyword != null && keyword.length() > 200) request.setAttribute("errorMessage", "Từ khóa tối đa 200 ký tự.");
         else if (keyword != null && keyword.isBlank()) request.setAttribute("errorMessage", "Nhập mã bạn đọc, mã thẻ hoặc họ tên.");
-        else try (ReaderDAO readers = new ReaderDAO()) {
-            request.setAttribute("librarian", readers.getLibrarian(signedInMember.getUsername()));
+        else if (keyword != null) try (ReaderDAO readers = new ReaderDAO()) {
             List<Reader2> matches = readers.searchReader(keyword);
             for (Reader2 reader : matches) {
                 LibraryCard2 card = readers.getUsableCard(reader.getId(), BorrowingContext.today());
@@ -47,7 +46,6 @@
         }
 
         request.setAttribute("draft", draft);
-        request.setAttribute("hasDraft", draft != null && draft.getSize() > 0);
 %>
 <%@ include file="common/header.jspf" %>
 <main class="shell">

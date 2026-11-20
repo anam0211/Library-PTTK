@@ -27,14 +27,12 @@
             LoanSlip2 savedLoan = loans.getById(loanId);
             request.setAttribute("savedLoan", savedLoan);
             if (savedLoan == null) request.setAttribute("errorMessage", "Không tìm thấy phiếu mượn. Hãy chọn bạn đọc để lập phiếu.");
-            else request.setAttribute("librarian", savedLoan.getLibrarian());
         } catch (SQLException error) {
             logSql(error);
             request.setAttribute("errorMessage", "Không thể đọc phiếu mượn từ MySQL. Vui lòng thử lại.");
         }
 
         request.setAttribute("draft", draft);
-        request.setAttribute("hasDraft", draft != null && draft.getSize() > 0);
 %>
 <%@ include file="common/header.jspf" %>
 <main class="shell">

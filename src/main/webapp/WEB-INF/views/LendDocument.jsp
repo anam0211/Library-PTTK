@@ -64,7 +64,6 @@
             return;
         }
         try (ReaderDAO readers = new ReaderDAO()) {
-            request.setAttribute("librarian", readers.getLibrarian(signedInMember.getUsername()));
             if (draft == null) request.setAttribute("errorMessage", "Hãy chọn bạn đọc trước khi lập phiếu.");
             else {
                 // Refresh the context on every GET; draft changes never reserve database stock.

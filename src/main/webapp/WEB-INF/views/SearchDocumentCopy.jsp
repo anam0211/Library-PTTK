@@ -10,10 +10,8 @@
         request.setAttribute("copyQuery", copyCode);
         request.setAttribute("copySearched", copyCode != null);
         try (ReaderDAO readers = new ReaderDAO()) {
-            request.setAttribute("librarian", readers.getLibrarian(signedInMember.getUsername()));
             BorrowingContext borrowing = draft == null ? null : loadBorrowingContext(readers, draft.getReaderId());
             if (draft == null) request.setAttribute("errorMessage", "Hãy chọn bạn đọc trước khi lập phiếu.");
-            request.setAttribute("borrowing", borrowing);
             if (copyCode != null && !copyCode.isBlank() && copyCode.length() <= 255) {
                 DocumentCopy2 foundCopy = new DocumentCopyDAO(readers.connection()).findByCode(copyCode.trim());
                 request.setAttribute("foundCopy", foundCopy);
@@ -30,7 +28,6 @@
         }
 
         request.setAttribute("draft", draft);
-        request.setAttribute("hasDraft", draft != null && draft.getSize() > 0);
 %>
 <%@ include file="common/header.jspf" %>
 <main class="shell">
@@ -93,7 +90,6 @@
     </section>
 
 </main>
-<%@ include file="common/ExitConfirmation.jspf" %>
 <%@ include file="common/footer.jspf" %>
 
 <% } %>

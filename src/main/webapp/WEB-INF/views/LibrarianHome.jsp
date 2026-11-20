@@ -4,17 +4,7 @@
     synchronized (session) {
         request.setAttribute("tieuDe", "Trang nhân viên");
         request.setAttribute("pageId", "home");
-        LoanDraft draft = (LoanDraft) session.getAttribute("libman.loanDraft");
         if (!"GET".equals(request.getMethod())) { response.sendError(405); return; }
-        try (ReaderDAO readers = new ReaderDAO()) {
-            request.setAttribute("librarian", readers.getLibrarian(signedInMember.getUsername()));
-        } catch (SQLException error) {
-            logSql(error);
-            request.setAttribute("errorMessage", "Không thể đọc dữ liệu MySQL. Kiểm tra cấu hình kết nối rồi thử lại.");
-        }
-
-        request.setAttribute("draft", draft);
-        request.setAttribute("hasDraft", draft != null && draft.getSize() > 0);
 %>
 <%@ include file="common/header.jspf" %>
 <main class="shell">

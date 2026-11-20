@@ -121,12 +121,17 @@ class DemoWebFlowTest {
         assertEquals(readerSignedIn?200:302,response.statusCode());assertFalse(response.body().contains("<script>alert(1)</script>"));
     }
 
-    @Test void includedConfirmationDialogKeepsVietnamese() throws Exception {
-        for(String path:new String[]{"/cho-muon-tai-lieu","/tim-ban-tai-lieu"}) {
-            var response=get(path);
-            if(!staffSignedIn){assertEquals(302,response.statusCode());continue;}
-            assertEquals(200,response.statusCode());assertTrue(response.body().contains("Tiếp tục lập phiếu"));assertFalse(response.body().contains("Tiá"));
+    @Test void confirmationDialogIsOnlyIncludedWhereTheActionNeedsIt() throws Exception {
+        var lend = get("/cho-muon-tai-lieu");
+        var copies = get("/tim-ban-tai-lieu");
+        if (!staffSignedIn) {
+            assertEquals(302, lend.statusCode()); assertEquals(302, copies.statusCode()); return;
         }
+        assertEquals(200, lend.statusCode()); assertEquals(200, copies.statusCode());
+        assertTrue(lend.body().contains("id=\"exit-dialog\""));
+        assertTrue(lend.body().contains("Tiếp tục lập phiếu"));
+        assertFalse(lend.body().contains("Tiá"));
+        assertFalse(copies.body().contains("id=\"exit-dialog\""));
     }
 
     @Test void allDemoPagesHaveValidVietnameseText() throws Exception {
