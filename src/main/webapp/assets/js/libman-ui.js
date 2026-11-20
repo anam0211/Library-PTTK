@@ -10,7 +10,6 @@
   }));
   document.getElementById("start-search")?.addEventListener("click", () => location.assign(context + "/tim-tai-lieu"));
   document.getElementById("start-lending")?.addEventListener("click", () => location.assign(context + "/tim-ban-doc"));
-  document.getElementById("print-slip")?.addEventListener("click", () => window.print());
   document.querySelectorAll("form[data-confirm]").forEach(form => form.addEventListener("submit", event => {
     if (form.dataset.approved === "true") return;
     event.preventDefault();

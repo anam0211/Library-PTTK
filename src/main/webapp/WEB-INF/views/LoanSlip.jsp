@@ -38,7 +38,7 @@
 %>
 <%@ include file="common/header.jspf" %>
 <main class="shell">
-<section id="slip-screen" aria-labelledby="slip-title" data-screen="slip">
+<section data-loan-id="<c:out value='${savedLoan.id}' />" id="slip-screen" aria-labelledby="slip-title" data-screen="slip">
       <p class="print-only" id="print-slip-id"><c:out value="${savedLoan.slipNumber}" /></p>
       <div class="workspace">
         <div class="page-heading">
@@ -98,6 +98,21 @@
     </section>
 
 </main>
+<script>
+(() => {
+    const screen = document.getElementById("slip-screen");
+    // Phiếu đang hiển thị được JSP đọc từ MySQL; mã phiếu xác định đúng bản in.
+    const savedLoan = { id: Number(screen.dataset.loanId) };
+
+    function printLoan(savedLoan) {
+        if (!savedLoan || !Number.isInteger(savedLoan.id) || savedLoan.id <= 0
+                || savedLoan.id !== Number(screen.dataset.loanId)) return;
+        window.print();
+    }
+
+    document.getElementById("print-slip").addEventListener("click", () => printLoan(savedLoan));
+})();
+</script>
 <%@ include file="common/footer.jspf" %>
 
 <% } %>

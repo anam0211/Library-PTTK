@@ -1,16 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="common/lending-session.jspf" %>
-<%!
-    // Request-specific objects are parameters, not shared fields of the compiled JSP.
-    private void addSelectedCopy(LoanDraft draft, BorrowingContext borrowing, DocumentCopy2 foundCopy,
-                                 String conditionAtLoan, String note) throws LoanValidationException {
-        String error = copyError(foundCopy, draft, borrowing);
-        if (!error.isEmpty()) throw new LoanValidationException(error);
-        LoanSlipDAO.validateInspection(conditionAtLoan, note);
-        if (!conditions(foundCopy).contains(conditionAtLoan)) throw new LoanValidationException("Chọn tình trạng từ danh sách.");
-        draft.add(foundCopy.withInspection(conditionAtLoan, note));
-    }
-%>
+
 <%
     synchronized (session) {
         request.setAttribute("tieuDe", "Cho mượn tài liệu");
@@ -37,7 +27,20 @@
                         if ("add".equals(action)) {
                             // SearchDocumentCopy.jsp posts the selected code, condition and note here.
                             DocumentCopy2 foundCopy = new DocumentCopyDAO(readers.connection()).findByCode(parameter(request, "copyCode"));
-                            addSelectedCopy(draft, borrowing, foundCopy, parameter(request, "condition"), parameter(request, "note"));
+                            // Mỗi request có đối tượng xử lý riêng, không dùng field chung của JSP.
+                            class LendDocument {
+                                public void addSelectedCopy(DocumentCopy2 foundCopy, String conditionAtLoan,
+                                                            String note) throws LoanValidationException {
+                                    String error = copyError(foundCopy, draft, borrowing);
+                                    if (!error.isEmpty()) throw new LoanValidationException(error);
+                                    LoanSlipDAO.validateInspection(conditionAtLoan, note);
+                                    if (!conditions(foundCopy).contains(conditionAtLoan))
+                                        throw new LoanValidationException("Chọn tình trạng từ danh sách.");
+                                    draft.add(foundCopy.withInspection(conditionAtLoan, note));
+                                }
+                            }
+                            LendDocument form = new LendDocument();
+                            form.addSelectedCopy(foundCopy, parameter(request, "condition"), parameter(request, "note"));
                         } else {
                             Librarian2 librarian = readers.getLibrarian(signedInMember.getUsername());
                             try (LoanSlipDAO loans = new LoanSlipDAO()) {
